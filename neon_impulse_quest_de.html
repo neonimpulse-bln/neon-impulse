@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Impulse — Impuls 1</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 3rem;
+    color: #1a1a1a;
+  }
+  .wrap { max-width: 600px; width: 100%; }
+
+  .badge-top {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #EEEDFE; color: #3C3489;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #7F77DD; display: inline-block; }
+
+  h1 { font-size: 26px; font-weight: 600; line-height: 1.25; margin-bottom: 0.5rem; color: #1a1a1a; }
+  .sub { font-size: 15px; color: #555; line-height: 1.65; margin-bottom: 1.75rem; }
+
+  .reward-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.75rem; }
+  .reward-card {
+    background: #fff;
+    border: 1px solid #e8e6df;
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+  }
+  .reward-icon { font-size: 22px; margin-bottom: 6px; }
+  .reward-label { font-size: 10px; color: #888; font-weight: 700; letter-spacing: 0.07em; margin-bottom: 3px; }
+  .reward-value { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+
+  .steps-title { font-size: 11px; font-weight: 700; color: #888; letter-spacing: 0.07em; margin-bottom: 10px; }
+
+  .step {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: #fff;
+    border: 1px solid #e8e6df;
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+    user-select: none;
+  }
+  .step:hover { border-color: #bbb; }
+  .step.done { border-color: #1D9E75; background: #E1F5EE; }
+  .step-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #EEEDFE; color: #3C3489;
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .step.done .step-num { background: #1D9E75; color: #fff; }
+  .step-body { flex: 1; }
+  .step-name { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 3px; }
+  .step-desc { font-size: 13px; color: #555; line-height: 1.55; }
+  .step-check {
+    font-size: 15px; color: #1D9E75; font-weight: 700;
+    opacity: 0; transition: opacity 0.15s;
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  }
+  .step.done .step-check { opacity: 1; }
+
+  .progress-wrap { margin: 1.5rem 0 0.5rem; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: #666; margin-bottom: 7px; }
+  .progress-track { height: 7px; background: #e8e6df; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: #7F77DD; border-radius: 4px; transition: width 0.4s ease; }
+
+  .xp-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #FAEEDA; color: #633806;
+    font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+    margin-top: 6px;
+  }
+
+  .next-level {
+    margin-top: 1.75rem;
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem;
+    border: 1.5px dashed #c8c3f0;
+  }
+  .next-level-label { font-size: 10px; font-weight: 700; color: #888; letter-spacing: 0.07em; margin-bottom: 5px; }
+  .next-level-text { font-size: 14px; color: #333; line-height: 1.6; }
+
+  .cta-btn {
+    display: block; width: 100%;
+    margin-top: 1.25rem;
+    background: #534AB7; color: #fff;
+    border: none; border-radius: 14px;
+    padding: 0.95rem 1rem;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer; text-align: center;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .cta-btn:hover { opacity: 0.87; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 22px; }
+    .reward-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="badge-top"><span class="dot"></span> IMPULS 1 · START</div>
+  <h1>Deine erste Mission mit Neon Impulse</h1>
+  <p class="sub">Keine trockene Anleitung — ein Quest. Hak alle Schritte ab, sichere dir dein Flakon und schalte Impuls 2 frei. Klick auf eine Aufgabe, sobald du sie erledigt hast.</p>
+
+  <div class="reward-row">
+    <div class="reward-card">
+      <div class="reward-icon">🎁</div>
+      <div class="reward-label">DEINE BELOHNUNG</div>
+      <div class="reward-value">50 ml Flakon — freie Wahl</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🏆</div>
+      <div class="reward-label">PREIS FÜR DIE COMMUNITY</div>
+      <div class="reward-value">50 ml Flakon — einer von zwei Düften</div>
+    </div>
+  </div>
+
+  <div class="steps-title">QUEST-AUFGABEN — klicken zum Abhaken</div>
+
+  <div class="step" onclick="toggle(this, 15)">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-name">@neon.impulse als Co-Autor hinzufügen</div>
+      <div class="step-desc">Beitrag erstellen → „Personen markieren" → „Co-Autoren einladen" → @neon.impulse eingeben. Die Reichweite verdoppelt sich sofort.</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="step" onclick="toggle(this, 20)">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-name">Reaktionsvideo drehen — du bist im Bild</div>
+      <div class="step-desc">Proben in die Hand nehmen, ehrliche Reaktion auf jeden Duft zeigen. Keine Inszenierung — genau das wird viral.</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="step" onclick="toggle(this, 15)">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-name">Deadline direkt im Post nennen</div>
+      <div class="step-desc">Beispiel: „Das Gewinnspiel endet am 20. März um 23:59 Uhr." Ohne Deadline kein Druck — ohne Druck keine Teilnehmer.</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="step" onclick="toggle(this, 15)">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-name">Teilnahmebedingungen im Post veröffentlichen</div>
+      <div class="step-desc">@neon.impulse und dir folgen · den Beitrag liken · 1–2 Freunde in den Kommentaren markieren.</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="step" onclick="toggle(this, 20)">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <div class="step-name">Nach 7 Tagen: Gewinner öffentlich auslosen</div>
+      <div class="step-desc">CommentPicker / Wheelofnames / Simpliers — Bildschirm aufzeichnen oder Screenshot machen und an uns schicken. Transparenz schafft Vertrauen.</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="step" onclick="toggle(this, 15)">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <div class="step-name">Gewinner in der Story bekannt geben</div>
+      <div class="step-desc">Gewinner in der Story und im Kommentar unter dem Post markieren. Keine Antwort innerhalb von 48 Stunden → neue Auslosung.</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="step" onclick="toggle(this, 15)">
+    <div class="step-num">7</div>
+    <div class="step-body">
+      <div class="step-name">Versanddaten übermitteln</div>
+      <div class="step-desc">Für den Gewinner und für dich: vollständiger Name, E-Mail-Adresse (für DHL-Benachrichtigungen) und Lieferadresse. Dann geht's los!</div>
+    </div>
+    <div class="step-check">✓</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="prog-text">Quest-Fortschritt</span>
+      <span id="prog-num">0 / 7 Aufgaben</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+  <div class="xp-badge" id="xp-label">+0 XP verdient</div>
+
+  <div class="next-level">
+    <div class="next-level-label">WAS ALS NÄCHSTES KOMMT — IMPULS 2</div>
+    <div class="next-level-text">Creator, die Impuls 1 erfolgreich abschließen, erhalten eine Einladung in unser exklusives Partnerprogramm — mit höherer Vergütung, Early Access zu neuen Düften und langfristiger Zusammenarbeit.</div>
+  </div>
+
+  <a class="cta-btn" href="mailto:hello@neonimpulse.de?subject=Impuls 1 abgeschlossen – ich will Impuls 2">Geschafft! Ich will Impuls 2 →</a>
+
+</div>
+<script>
+  let xp = 0, done = 0;
+  const total = 115;
+
+  function toggle(el, pts) {
+    const wasDone = el.classList.contains('done');
+    el.classList.toggle('done');
+    if (!wasDone) { xp += pts; done++; }
+    else { xp -= pts; done--; }
+    const pct = Math.round((xp / total) * 100);
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-num').textContent = done + ' / 7 Aufgaben';
+    document.getElementById('prog-text').textContent = done === 7 ? '🎉 Quest abgeschlossen!' : 'Quest-Fortschritt';
+    document.getElementById('xp-label').textContent = '+' + xp + ' XP verdient';
+  }
+</script>
+</body>
+</html>
